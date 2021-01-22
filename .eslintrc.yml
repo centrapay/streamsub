@@ -26,8 +26,20 @@ rules:
   strict: [ error, "global" ]
 
 overrides:
+
   - files: [ "scripts/**" ]
     rules:
       node/shebang: [ off ]
       no-console: [ off ]
       node/no-unpublished-require: [ off ]
+
+  - files: [ "features/**" ]
+    rules:
+      no-console: [ off ]
+      node/no-unpublished-require: [ off ]
+    globals:
+      Given: readonly
+      When: readonly
+      Then: readonly
+      Before: readonly
+      After: readonly
