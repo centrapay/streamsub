@@ -22,5 +22,7 @@
     "jest": "^26.2.1",
     "wait-on": "^5.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "redis": "^3.0.2"
+  }
 }
