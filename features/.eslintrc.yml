@@ -1,0 +1,9 @@
+globals:
+  Given: readonly
+  When: readonly
+  Then: readonly
+  Before: readonly
+  After: readonly
+rules:
+  node/no-unpublished-require: 0
+  node/no-extraneous-require: 0

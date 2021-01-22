@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "cucumber": "cucumber-js"
   },
   "keywords": [],
   "author": "Nathan Jones <nathan.jones@centrapay.com>",
@@ -14,9 +15,12 @@
   "homepage": "https://github.com/centrapay/streamsub",
   "repository": "https://github.com/centrapay/streamsub.git",
   "devDependencies": {
+    "@cucumber/cucumber": "^7.0.0",
     "eslint": "^7.3.0",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^26.2.1"
+    "glob": "^7.1.6",
+    "jest": "^26.2.1",
+    "wait-on": "^5.2.1"
   },
   "dependencies": {}
 }
