@@ -1,0 +1,22 @@
+{
+  "name": "@centrapay/streamsub",
+  "version": "1.0.0",
+  "description": "Robust, scalable pubsub over Redis streams",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "Nathan Jones <nathan.jones@centrapay.com>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/centrapay/streamsub",
+  "repository": "https://github.com/centrapay/streamsub.git",
+  "devDependencies": {
+    "eslint": "^7.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "jest": "^26.2.1"
+  },
+  "dependencies": {}
+}
