@@ -23,19 +23,11 @@ function errorExit(err) {
   process.exit(1);
 }
 
-const stream = process.argv[2];
-const id = process.argv[3];
-
-if (!stream) {
-  errorExit('Missing arg 1: stream');
-}
-
-if (!id) {
-  errorExit('Missing arg 2: id');
-}
+const stream = process.argv[2] || errorExit('Missing arg 1: stream');
+const id = process.argv[3] || errorExit('Missing arg 2: id');
 
 async function main() {
-  const redis = require('./redis-async-client');
+  const redis = require('./redisAsyncClient');
   const data = await redis.xread('STREAMS', stream, id);
   await redis.quit();
   return require('util').inspect(data, null, null);

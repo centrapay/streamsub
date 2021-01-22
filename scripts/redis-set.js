@@ -23,19 +23,11 @@ function errorExit(err) {
   process.exit(1);
 }
 
-const key = process.argv[2];
-const value = process.argv[3];
-
-if (!key) {
-  errorExit('Missing arg 1: key');
-}
-
-if (!value) {
-  errorExit('Missing arg 2: value');
-}
+const key = process.argv[2] || errorExit('Missing arg 1: key');
+const value = process.argv[3] || errorExit('Missing arg 2: value');
 
 async function main() {
-  const redis = require('./redis-async-client');
+  const redis = require('./redisAsyncClient');
   await redis.set(key, value);
   await redis.quit();
 }

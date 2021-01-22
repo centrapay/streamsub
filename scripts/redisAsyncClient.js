@@ -17,20 +17,7 @@
 'use strict';
 
 const redis = require('redis');
+const promisifyRedis = require('../lib/promisifyRedis');
 const client = redis.createClient();
-
 client.on('error', console.error);
-
-const { promisify } = require('util');
-
-function wrap(op) {
-  return promisify(client[op]).bind(client);
-}
-
-module.exports = {
-  get: wrap('get'),
-  set: wrap('set'),
-  xadd: wrap('xadd'),
-  xread: wrap('xread'),
-  quit: wrap('quit')
-};
+module.exports = promisifyRedis(client);
