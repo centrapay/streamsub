@@ -25,6 +25,8 @@ services:
     depends_on: [ redis ]
     volumes: [ ".:/work" ]
     stop_signal: SIGKILL
+    environment:
+      - REDIS_HOST=redis
     command:
       - bash
       - -c
