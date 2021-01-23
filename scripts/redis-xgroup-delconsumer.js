@@ -24,13 +24,14 @@ function errorExit(err) {
 }
 
 const stream = process.argv[2] || errorExit('Missing arg 1: stream');
-const data = process.argv[3] || errorExit('Missing arg 2: data');
+const group = process.argv[3] || errorExit('Missing arg 2: group');
+const consumer = process.argv[4] || errorExit('Missing arg 3: consumer');
 
 async function main() {
   const redis = require('./redisAsyncClient');
-  const id = await redis.xadd(stream, 'MAXLEN', '~', '100', '*', 'data', data);
+  const count = await redis.xgroup('DELCONSUMER', stream, group, consumer);
   await redis.quit();
-  return id;
+  return count;
 }
 
 main()
