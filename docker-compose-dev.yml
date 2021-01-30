@@ -19,6 +19,12 @@ services:
     volumes: [ node-modules:/work/node_modules ]
   script:
     volumes: [ node-modules:/work/node_modules ]
+  redis-commander:
+    image: rediscommander/redis-commander
+    ports: [ "8081:8081" ]
+    stop_signal: SIGKILL
+    environment:
+      - REDIS_HOST=redis
 
 volumes:
   node-modules:
