@@ -18,8 +18,10 @@
     "@cucumber/cucumber": "^7.0.0",
     "eslint": "^7.3.0",
     "eslint-plugin-node": "^11.1.0",
+    "expect": "^26.6.2",
     "glob": "^7.1.6",
     "jest": "^26.2.1",
+    "uuid": "^8.3.2",
     "wait-on": "^5.2.1"
   },
   "dependencies": {
