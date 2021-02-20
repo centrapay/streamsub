@@ -119,7 +119,7 @@ Redis docs: [XACK][]
 
 The XPENDING command returns information about pending messages for a consumer
 group (messages that have been read by a consumer but not acknowledged). The
-summary form of XPENDING does not provide any idle time information so it not
+summary form of XPENDING does not provide any idle time information so it is not
 useful for detecting overdue messages but may be useful for debugging.
 
 ```
