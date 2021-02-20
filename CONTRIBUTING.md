@@ -44,6 +44,15 @@ streams.
 | xclaim             | [XCLAIM][]     | ✔      | Reassign overdue messages             |
 
 
+## Other TODOs
+
+
+| TODO                                    | Done |
+|-----------------------------------------|------|
+| Stream max length semantics for streams |      |
+| Scope of group names and consumer names |      |
+| XPENDING / XCLAIM effect on idle time   |      |
+
 
 [GET]: https://redis.io/commands/get
 [SET]: https://redis.io/commands/set
