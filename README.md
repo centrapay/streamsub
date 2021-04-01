@@ -28,7 +28,27 @@ implementing pubsub and explains how they are incorporated into StreamSub.
 Compared with the official [Redis Streams Intro][], this guide points out some
 not-so-clear details related to using Redis streams for pubsub.
 
-The commands should be run in order after starting Redis on the standard port.
+The following Redis streams concepts are the building blocks for a pubsub
+solution using Redis:
+
+ 1. **Stream** - A list-like data structure that offers random access and
+    allows us to block while waiting for new entries. In a pubsub scenario the
+    stream acts as a logical topic - we publish to the stream but do not read
+    directly from the stream.
+
+ 2. **Consumer Group** - A logical subscription to a stream which routes
+    messages to one of many participating consumers and keeps track of the
+    acknowledgement status for each message in a "Pending Entries List".
+    Typically a consumer group would be defined for each distinct usage of a
+    "topic" stream and would be shared by all instances of a clustered
+    application.
+
+ 3. **Consumer** - An uniquely identifiable consumer of messages. The typical
+    scope for a consumer is a single instance of a clustered application.
+
+
+The commands that follow should be run in order after starting Redis on the
+standard port.
 
 
 ### 1. Create consumer group
@@ -37,6 +57,9 @@ Unlike streams, Redis stream consumer groups must be created explicitly.
 ```
 scripts/redis-xgroup-create.js stream-1 group-1
 ```
+
+Consumer groups are scoped to a stream. Different consumer groups can share
+the same name if they are created on different streams.
 
 The StreamSub client can be instructed to create Redis stream consumer groups
 for all registered subscribers.
@@ -92,8 +115,9 @@ scripts/redis-xreadgroup.js stream-1 group-1 consumer-1 0
 ```
 
 Consumer group consumers are created automatically on first read. The special
-id ">" matches messages not yet delivered to any consumer. Only messages added
-to the stream since the group was created can be consumed via the group.
+id ">" matches messages not yet delivered to any consumer. Because the group
+was declared with "$" as the start id, only messages added to the stream since
+the group was created can be consumed via the group.
 
 StreamSub clients, once started and until stopped, continuously attempt to read
 messages for all registered subscribers. The consumer id can be configured per
