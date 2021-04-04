@@ -27,16 +27,16 @@ const topic = process.argv[2] || errorExit('Missing arg 1: topic');
 const message = process.argv[3] || errorExit('Missing arg 2: message');
 
 async function main() {
-  const redis = require('./redisAsyncClient');
+  const redisClient = require('./redisAsyncClient');
   const StreamSub = require('../lib/StreamSub');
   const streamsub = new StreamSub({
     consumerId: `scripts/streamsub-publish/${require('os').hostname()}`,
-    redis,
+    redisClient,
   });
   streamsub.on('info', console.log);
   streamsub.on('error', console.error);
   await streamsub.publish({ topic, message });
-  await redis.quit();
+  await redisClient.quit();
 }
 
 main()

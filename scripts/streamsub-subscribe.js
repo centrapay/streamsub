@@ -55,11 +55,11 @@ function loggingSubscriber({ topic, group }) {
 }
 
 async function main() {
-  const redis = require('./redisAsyncClient');
+  const redisClient = require('./redisAsyncClient');
   const StreamSub = require('../lib/StreamSub');
   const streamsub = new StreamSub({
     consumerId: `scripts/streamsub-subscribe/${require('os').hostname()}`,
-    redis,
+    redisClient,
   });
   topics.forEach(topic => {
     consumerGroups.forEach(group => {
@@ -71,7 +71,7 @@ async function main() {
   await streamsub.init();
   await waitForInterrupt();
   await streamsub.shutdown();
-  await redis.quit();
+  await redisClient.quit();
 }
 
 main()
