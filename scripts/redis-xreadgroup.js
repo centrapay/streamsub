@@ -23,15 +23,18 @@ function errorExit(err) {
   process.exit(1);
 }
 
-const stream = process.argv[2] || errorExit('Missing arg 1: stream');
-const group = process.argv[3] || errorExit('Missing arg 2: group');
-const consumer = process.argv[4] || errorExit('Missing arg 3: consumer');
-const id = process.argv[5] || errorExit('Missing arg 4: id');
-const count = process.argv[6] || '1';
+const group = process.argv[2] || errorExit('Missing arg 1: group');
+const consumer = process.argv[3] || errorExit('Missing arg 2: consumer');
+const count = process.argv[4] || errorExit('Missing arg 3: count');
+const streamsAndIds = process.argv.slice(5);
+
+if (streamsAndIds.length < 2) {
+  errorExit('Missing args: at least one stream and message id are required');
+}
 
 async function main() {
   const redis = require('./redisAsyncClient');
-  const data = await redis.xreadgroup('GROUP', group, consumer, 'BLOCK', '5000', 'COUNT', count, 'STREAMS', stream, id);
+  const data = await redis.xreadgroup('GROUP', group, consumer, 'BLOCK', '5000', 'COUNT', count, 'STREAMS', ...streamsAndIds);
   await redis.quit();
   return require('util').inspect(data, null, null);
 }

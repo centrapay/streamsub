@@ -31,10 +31,10 @@ not-so-clear details related to using Redis streams for pubsub.
 The following Redis streams concepts are the building blocks for a pubsub
 solution using Redis:
 
- 1. **Stream** - A list-like data structure that offers random access and
-    allows us to block while waiting for new entries. In a pubsub scenario the
-    stream acts as a logical topic - we publish to the stream but do not read
-    directly from the stream.
+ 1. **Stream** - A list-like, append-only, data structure that offers random
+    access and allows us to block while waiting for new entries. In a pubsub
+    scenario the stream acts as a logical topic - we publish to the stream but
+    do not read directly from the stream.
 
  2. **Consumer Group** - A logical subscription to a stream which routes
     messages to one of many participating consumers and keeps track of the
@@ -61,8 +61,8 @@ scripts/redis-xgroup-create.js stream-1 group-1
 Consumer groups are scoped to a stream. Different consumer groups can share
 the same name if they are created on different streams.
 
-The StreamSub client can be instructed to create Redis stream consumer groups
-for all registered subscribers.
+When initialized, the StreamSub client will automatically create Redis stream
+consumer groups for all registered subscribers.
 
 Redis docs: [XGROUP][]
 
@@ -103,7 +103,7 @@ Redis docs: [XREAD][]
 Read two new messages via consumer group:
 
 ```
-scripts/redis-xreadgroup.js stream-1 group-1 consumer-1 '>' 2
+scripts/redis-xreadgroup.js group-1 consumer-1 2 stream-1 '>'
 ```
 
 Re-read previously delivered, unacknowledged, messages with id greater than
@@ -111,7 +111,7 @@ Re-read previously delivered, unacknowledged, messages with id greater than
 crash:
 
 ```
-scripts/redis-xreadgroup.js stream-1 group-1 consumer-1 0
+scripts/redis-xreadgroup.js group-1 consumer-1 stream-1 0
 ```
 
 Consumer group consumers are created automatically on first read. The special
@@ -120,8 +120,28 @@ was declared with "$" as the start id, only messages added to the stream since
 the group was created can be consumed via the group.
 
 StreamSub clients, once started and until stopped, continuously attempt to read
-messages for all registered subscribers. The consumer id can be configured per
-StreamSub client and defaults to the hostname.
+messages for all registered subscribers.
+
+**A Note on connection use:** Reading from a consumer group blocks the Redis
+connection for potentially a long time until it returns a result or times out.
+To avoid multiple read queries blocking each other, a distinct Redis client
+instance can be used for each concurrent read query.  To mitigate having an
+explosion in the number of Redis connections open when reading from consumer
+groups, multiple consumer groups can be read with a single read query when they
+have the same group name. Thus, to maximize connection reuse, applications
+should aim to use the broadest applicable group names where it makes sense.  As
+a guideline, consumer groups should typically be named using an application or
+system component name instead of an event name which would typically be the
+case for streams.
+
+```
+scripts/redis-xreadgroup.js group-1 consumer-1 10 stream-1 stream-2 '>' '>'
+```
+
+StreamSub clients must be instantiated with a consumer id which will
+effectively grant them exclusive visibility over delivered messages. A suitable
+consumer id will depend on the nature of the application deployment. A typical
+approach may be to combine the app name with the hostname.
 
 Redis docs: [XREADGROUP][]
 
