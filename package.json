@@ -16,7 +16,7 @@
   "repository": "https://github.com/centrapay/streamsub.git",
   "devDependencies": {
     "@cucumber/cucumber": "^7.3.0",
-    "convict": "^6.1.0",
+    "convict": "^6.2.0",
     "eslint": "^7.28.0",
     "eslint-plugin-node": "^11.1.0",
     "expect": "^27.0.2",
