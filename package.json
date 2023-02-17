@@ -19,7 +19,7 @@
     "convict": "^6.2.4",
     "eslint": "^8.34.0",
     "eslint-plugin-node": "^11.1.0",
-    "expect": "^29.4.2",
+    "expect": "^29.4.3",
     "glob": "^8.1.0",
     "jest": "^27.5.1",
     "json5": "^2.2.3",
